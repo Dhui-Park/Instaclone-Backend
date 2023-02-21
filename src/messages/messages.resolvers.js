@@ -9,8 +9,11 @@ export default {
           roomId: id,
         },
       }),
-    unreadTotal: ({ id }, _, { loggedInUser }) =>
-      client.message.count({
+    unreadTotal: ({ id }, _, { loggedInUser }) => {
+      if (!loggedInUser) {
+        return 0;
+      }
+      return client.message.count({
         where: {
           read: false,
           roomId: id,
@@ -20,7 +23,8 @@ export default {
             },
           },
         },
-      }),
+      });
+    },
   },
 };
 // you can add {cursor} / {page} ... in messages
