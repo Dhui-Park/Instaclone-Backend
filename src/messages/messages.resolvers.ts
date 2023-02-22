@@ -9,6 +9,7 @@ export default {
           roomId: id,
         },
       }),
+    // you can add {cursor} / {page} ... in messages
     unreadTotal: ({ id }, _, { loggedInUser }) => {
       if (!loggedInUser) {
         return 0;
@@ -26,5 +27,7 @@ export default {
       });
     },
   },
+  Message: {
+    user: ({ id }) => client.message.findUnique({ where: { id } }).user(),
+  },
 };
-// you can add {cursor} / {page} ... in messages
