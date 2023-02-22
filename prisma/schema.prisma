@@ -21,10 +21,10 @@ model User {
   followers User[]    @relation("FollowRelation")
   following User[]    @relation("FollowRelation")
   createdAt DateTime  @default(now())
-  rooms     Room[]
   updatedAt DateTime  @updatedAt
   comments  Comment[]
-  Message   Message[]
+  rooms     Room[]
+  messages  Message[]
 }
 
 model Photo {

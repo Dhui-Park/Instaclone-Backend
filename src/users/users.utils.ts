@@ -7,19 +7,21 @@ export const getUser = async (token) => {
     if (!token) {
       return null;
     }
-    const { id } = await jwt.verify(token, process.env.SECRET_KEY);
-    const user = await client.user.findUnique({ where: { id } });
-    if (user) {
-      return user;
-    } else {
-      return null;
+    const verifiedToken: any = await jwt.verify(token, process.env.SECRET_KEY);
+    if ("id" in verifiedToken) {
+      const user = await client.user.findUnique({
+        where: { id: verifiedToken["id"] },
+      });
+      if (user) {
+        return user;
+      }
     }
-  } catch {
+  } catch (error) {
     return null;
   }
 };
 
-export function protectedResolver(ourResolver) {
+export function protectedResolver(ourResolver: Resolver) {
   return function (root, args, context, info) {
     if (!context.loggedInUser) {
       const query = info.operation.operation === "query";

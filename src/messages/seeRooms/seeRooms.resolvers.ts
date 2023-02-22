@@ -3,19 +3,14 @@ import { protectedResolver } from "../../users/users.utils";
 
 export default {
   Query: {
-    seeRoom: protectedResolver((_, { id }, { loggedInUser }) =>
-      client.room.findFirst({
+    seeRooms: protectedResolver((_, __, { loggedInUser }) =>
+      client.room.findMany({
         where: {
-          id,
           users: {
             some: {
               id: loggedInUser.id,
             },
           },
-        },
-        include: {
-          users: true,
-          message: true,
         },
       })
     ),
